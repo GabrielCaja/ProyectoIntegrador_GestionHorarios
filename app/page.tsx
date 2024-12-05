@@ -12,7 +12,30 @@ export default function LoginPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Aquí iría la lógica de autenticación
+    // Ruta para login Route::post('/login', [AuthController::class, 'login']);
+    fetch('http://localhost:8000/api/login/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    })
+      .then(response => {
+        if (!response.ok) {
+          console.log('Login failed');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.access_token) {
+          console.log('Login successful', data);
+        } 
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+
     console.log('Intento de', { email, password })
   }
 
